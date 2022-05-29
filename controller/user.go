@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"TikTok/dao"
+	"TikTok/http_param"
+	"TikTok/model"
+	"TikTok/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"sync/atomic"
 )
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
@@ -19,8 +22,6 @@ var usersLoginInfo = map[string]User{
 	},
 }
 
-var userIdSequence = int64(1)
-
 type UserLoginResponse struct {
 	Response
 	UserId int64  `json:"user_id,omitempty"`
@@ -33,26 +34,45 @@ type UserResponse struct {
 }
 
 func Register(c *gin.Context) {
-	username := c.Query("username")
-	password := c.Query("password")
+	params := http_param.UserLogIn{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
 
-	token := username + password
+	token, _ := util.GenerateTokenByJwt(params.Username, params.Password)
 
-	if _, exist := usersLoginInfo[token]; exist {
+	isExist, err := dao.ExistUser(params.Username)
+	if err != nil {
+		c.JSON(http.StatusOK, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
+		})
+	}
+	if isExist {
 		c.JSON(http.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
 		})
+	}
+
+	user := model.LogUser{
+		Username:	params.Username,
+		Password: 	params.Password,
+		Token: 		token,
+		FollowNum:  0,
+		FollowerNum:0,
+	}
+	ID, err := dao.CreateUser(user)
+	if err != nil {
+		c.JSON(http.StatusOK, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
+		})
 	} else {
-		atomic.AddInt64(&userIdSequence, 1)
-		newUser := User{
-			Id:   userIdSequence,
-			Name: username,
-		}
-		usersLoginInfo[token] = newUser
 		c.JSON(http.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: 0},
-			UserId:   userIdSequence,
-			Token:    username + password,
+			UserId:   ID,
+			Token:    token,
 		})
 	}
 }
