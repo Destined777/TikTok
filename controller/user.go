@@ -46,12 +46,12 @@ func Register(c *gin.Context) {
 
 	isExist, err := dao.ExistUser(params.Username)
 	if err != nil {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
 		})
 	}
 	if isExist {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
 		})
 	}
@@ -62,10 +62,11 @@ func Register(c *gin.Context) {
 		Token: 		token,
 		FollowNum:  0,
 		FollowerNum:0,
+		IsFollow: 	false,
 	}
 	ID, err := dao.CreateUser(user)
 	if err != nil {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
 		})
 	} else {
@@ -88,19 +89,19 @@ func Login(c *gin.Context) {
 
 	isExist, err := dao.ExistUser(params.Username)
 	if err != nil {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
 		})
 	}
 	if !isExist {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
 		})
 	}
 
 	ID, token, isMatch := dao.IsUsernameAndPasswordMatch(params.Username, params.Password)
 	if !isMatch {
-		c.JSON(http.StatusOK, UserLoginResponse{
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "Password is not matched with the username"},
 		})
 	} else {
@@ -113,12 +114,37 @@ func Login(c *gin.Context) {
 }
 
 func UserInfo(c *gin.Context) {
-	token := c.Query("token")
+	params := http_param.GetUser{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserResponse{
+			Response: Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
 
-	if user, exist := usersLoginInfo[token]; exist {
+	isExist, err := dao.ExistUserByID(params.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, UserResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
+		})
+	}
+	if !isExist {
+		c.JSON(http.StatusBadRequest, UserResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
+		})
+	}
+
+	if user, match := dao.IsIDAndTokenMatch(params.ID, params.Token); match {
+		userInfo := User{
+			Id: 			user.ID,
+			Name: 			user.Username,
+			FollowCount: 	user.FollowNum,
+			FollowerCount: 	user.FollowerNum,
+			IsFollow: 		user.IsFollow,
+		}
 		c.JSON(http.StatusOK, UserResponse{
 			Response: Response{StatusCode: 0},
-			User:     user,
+			User:     userInfo,
 		})
 	} else {
 		c.JSON(http.StatusOK, UserResponse{

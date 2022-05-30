@@ -7,4 +7,5 @@ type LogUser struct {
 	Token  		string
 	FollowNum	int64
 	FollowerNum	int64
+	IsFollow	bool
 }

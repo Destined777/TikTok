@@ -44,3 +44,25 @@ func IsUsernameAndPasswordMatch(username, password string) (ID int64, token stri
 	}
 	return u.ID, u.Token, true
 }
+
+func ExistUserByID(ID int64) (isExist bool, err error) {
+	user := model.LogUser{}
+	err = global.DB.Where("ID = ?", ID).First(&user).Error
+	if err == gorm.ErrRecordNotFound {
+		return false, nil
+	} else if err == nil {
+		return true, nil
+	} else {
+		return false, err
+	}
+}
+
+func IsIDAndTokenMatch(ID int64, token string) (user model.LogUser, match bool) {
+	global.DB.Where("ID = ?", ID).First(&user)
+	if user.Token != token {
+		match = false
+	} else {
+		match = true
+	}
+	return
+}
