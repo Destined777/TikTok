@@ -36,3 +36,11 @@ func GetUserByName(username string) (user model.LogUser, err error) {
 	err = global.DB.Where("username=?", username).Find(&user).Error
 	return
 }
+
+func IsUsernameAndPasswordMatch(username, password string) (ID int64, token string, isMatch bool) {
+	u, _ := GetUserByName(username)
+	if u.Password != password {
+		return u.ID, u.Token, false
+	}
+	return u.ID, u.Token, true
+}

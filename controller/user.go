@@ -78,20 +78,36 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	username := c.Query("username")
-	password := c.Query("password")
+	params := http_param.UserLogIn{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
 
-	token := username + password
-
-	if user, exist := usersLoginInfo[token]; exist {
+	isExist, err := dao.ExistUser(params.Username)
+	if err != nil {
 		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 0},
-			UserId:   user.Id,
-			Token:    token,
+			Response: Response{StatusCode: 1, StatusMsg: "Something went wrong"},
+		})
+	}
+	if !isExist {
+		c.JSON(http.StatusOK, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
+		})
+	}
+
+	ID, token, isMatch := dao.IsUsernameAndPasswordMatch(params.Username, params.Password)
+	if !isMatch {
+		c.JSON(http.StatusOK, UserLoginResponse{
+			Response: Response{StatusCode: 1, StatusMsg: "Password is not matched with the username"},
 		})
 	} else {
 		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
+			Response: 	Response{StatusCode: 0},
+			UserId: 	ID,
+			Token: 		token,
 		})
 	}
 }
