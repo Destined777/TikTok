@@ -1,6 +1,8 @@
 package controller
 
-var DemoVideos = []Video{
+import "TikTok/http_param"
+
+var DemoVideos = []http_param.Video{
 	{
 		Id:            1,
 		Author:        DemoUser,
@@ -12,7 +14,7 @@ var DemoVideos = []Video{
 	},
 }
 
-var DemoComments = []Comment{
+var DemoComments = []http_param.Comment{
 	{
 		Id:         1,
 		User:       DemoUser,
@@ -21,7 +23,7 @@ var DemoComments = []Comment{
 	},
 }
 
-var DemoUser = User{
+var DemoUser = http_param.User{
 	Id:            1,
 	Name:          "TestUser",
 	FollowCount:   0,
