@@ -2,8 +2,9 @@ package main
 
 import (
 	"TikTok/config"
-	"TikTok/controller"
 	"TikTok/global"
+	"TikTok/model"
+	"TikTok/router"
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -15,9 +16,9 @@ import (
 func main() {
 	r := gin.Default()
 
-	initRouter(r)
+	router.InitRouter(r)
 
-	_ = r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	_ = r.Run(":8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
 func init() {
@@ -54,7 +55,7 @@ func initDB() {
 		sqlDB.SetMaxOpenConns(10000)
 		sqlDB.SetConnMaxLifetime(time.Minute)
 		global.DB = localDb
-		err = global.DB.AutoMigrate(&controller.User{})
+		err = global.DB.AutoMigrate(&model.LogUser{})
 		if err != nil {
 			return
 		}

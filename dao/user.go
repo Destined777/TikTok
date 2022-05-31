@@ -9,7 +9,7 @@ import (
 // ExistUser 确认用户是否存在，对未查询到与查询到用户均不报错而只是分类
 func ExistUser(username string) (isExist bool, err error) {
 	user := model.LogUser{}
-	err = global.DB.Where("Username = ?", username).First(&user).Error
+	err = global.DB.Where("Username = ?", username).Find(&user).Error
 	if err == gorm.ErrRecordNotFound {
 		return false, nil
 	} else if err == nil {
@@ -20,7 +20,7 @@ func ExistUser(username string) (isExist bool, err error) {
 }
 
 func CreateUser(user model.LogUser) (ID int64, err error) {
-	err = global.DB.Create(user).Error
+	err = global.DB.Create(&user).Error
 	if err != nil {
 		return
 	}

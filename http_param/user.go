@@ -4,7 +4,7 @@ import "TikTok/util"
 
 type UserLogIn struct {
 	Username	string `form:"username" binding:"required,min=1,max=32"`
-	Password	string `form:"Password" binding:"required,min=1,max=32"`
+	Password	string `form:"password" binding:"required,min=1,max=32"`
 }
 
 func (r *UserLogIn) GetError(err error) string {
