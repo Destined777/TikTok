@@ -25,7 +25,6 @@ func Register(params http_param.UserLogIn) (ID int64, token string, err error) {
 		Token: 		token,
 		FollowNum:  0,
 		FollowerNum:0,
-		IsFollow: 	false,
 	}
 	ID, err = dao.CreateUser(user)
 	return
@@ -63,10 +62,10 @@ func UserInfo(params http_param.GetUser)(userInfo http_param.User, err error) {
 			Name: 			user.Username,
 			FollowCount: 	user.FollowNum,
 			FollowerCount: 	user.FollowerNum,
-			IsFollow: 		user.IsFollow,
+			IsFollow: 		false,
 		}
 	} else {
-		err = errors.New("user doesn't exist")
+		err = errors.New("ID and Token is not matched")
 	}
 	return
 }

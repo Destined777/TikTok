@@ -28,7 +28,7 @@ type GetUser struct {
 func (r *GetUser) GetError(err error) string {
 	m := map[string]string{
 		"ID": "用户ID",
-		"token": "用户鉴权token",
+		"Token": "用户鉴权token",
 	}
 
 	s := util.ErrorHandler(err, m)

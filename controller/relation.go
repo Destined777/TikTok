@@ -2,6 +2,7 @@ package controller
 
 import (
 	"TikTok/http_param"
+	"TikTok/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,12 +14,20 @@ type UserListResponse struct {
 
 // RelationAction no practical effect, just check if token is valid
 func RelationAction(c *gin.Context) {
-	token := c.Query("token")
+	params := http_param.Follow{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
 
-	if _, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 0})
+	err := service.Follow(params)
+
+	if err != nil {
+		c.JSON(http.StatusOK, http_param.Response{StatusCode: 1, StatusMsg: err.Error()})
 	} else {
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+		c.JSON(http.StatusOK, http_param.Response{StatusCode: 0})
 	}
 }
 
