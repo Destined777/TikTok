@@ -3,6 +3,7 @@ package service
 import (
 	"TikTok/dao"
 	"TikTok/http_param"
+	"TikTok/model"
 	"errors"
 )
 
@@ -67,7 +68,8 @@ func GetFollowings(params http_param.GetUser) (res []http_param.User, err error)
 	}
 
 	for i := 0; i < len(IDs); i++ {
-		logUser, err := dao.GetUserByID(IDs[i])
+		var logUser model.LogUser
+		logUser, err = dao.GetUserByID(IDs[i])
 		if err != nil {
 			return
 		}
@@ -104,11 +106,13 @@ func GetFollowers(params http_param.GetUser) (res []http_param.User, err error) 
 	}
 
 	for i := 0; i < len(IDs); i++ {
-		logUser, err := dao.GetUserByID(IDs[i])
+		var logUser model.LogUser
+		logUser, err = dao.GetUserByID(IDs[i])
 		if err != nil {
 			return
 		}
-		isFollow, err := dao.IsFollow(params.ID, logUser.ID)
+		var isFollow bool
+		isFollow, err = dao.IsFollow(params.ID, logUser.ID)
 		user := http_param.User{
 			Id: 			logUser.ID,
 			Name: 			logUser.Username,
