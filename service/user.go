@@ -65,7 +65,7 @@ func UserInfo(params http_param.GetUser)(userInfo http_param.User, err error) {
 			IsFollow: 		false,
 		}
 	} else {
-		err = errors.New("ID and Token is not matched")
+		err = errors.New("ID and Token are not matched")
 	}
 	return
 }

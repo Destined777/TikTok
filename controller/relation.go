@@ -31,14 +31,30 @@ func RelationAction(c *gin.Context) {
 	}
 }
 
-// FollowList all users have same follow list
+// FollowList get all the users followed
 func FollowList(c *gin.Context) {
-	c.JSON(http.StatusOK, UserListResponse{
-		Response: http_param.Response{
-			StatusCode: 0,
-		},
-		UserList: []http_param.User{DemoUser},
-	})
+	params := http_param.GetUser{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
+
+	res, err := service.GetFollowings(params)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: err.Error()},
+		})
+	} else {
+		c.JSON(http.StatusOK, UserListResponse{
+			Response: http_param.Response{
+				StatusCode: 0,
+			},
+			UserList: res,
+		})
+	}
 }
 
 // FollowerList all users have same follower list

@@ -43,3 +43,8 @@ func Unfollow(userID, toID int64) (err error) {
 		return
 	}
 }
+
+func FindFollowings(id int64) (IDs []int64, err error) {
+	err = global.DB.Model(&model.Follow{}).Where("UserID = ? and IsFollow = ?", id, true).Pluck("ToID", &IDs).Error
+	return
+}

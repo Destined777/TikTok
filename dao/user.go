@@ -66,3 +66,32 @@ func IsIDAndTokenMatch(ID int64, token string) (user model.LogUser, match bool) 
 	}
 	return
 }
+
+func GetUserByID(id int64) (user model.LogUser, err error) {
+	err = global.DB.Where("ID=?", id).Find(&user).Error
+	return
+}
+
+func AddFollowNum(id int64) (err error) {
+	var user model.LogUser
+	err = global.DB.Where("ID = ?", id).Find(&user).Error
+	if err != nil {
+		return
+	}
+	user.FollowNum++
+	err = global.DB.Save(&user).Error
+	return
+}
+
+func ReduceFollowNum(id int64) (err error) {
+	var user model.LogUser
+	err = global.DB.Where("ID = ?", id).Find(&user).Error
+	if err != nil {
+		return
+	}
+	if user.FollowerNum > 0 {
+		user.FollowNum--
+	}
+	err = global.DB.Save(&user).Error
+	return
+}
