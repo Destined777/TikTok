@@ -55,6 +55,12 @@ func Publish(c *gin.Context) {
 	}
 
 	err = service.CreateVideo(title, ID, finalName)
+	if err != nil {
+		c.JSON(http.StatusOK, http_param.Response{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+	}
 	c.JSON(http.StatusOK, http_param.Response{
 		StatusCode: 0,
 		StatusMsg:  finalName + " uploaded successfully",
