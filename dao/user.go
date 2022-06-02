@@ -95,3 +95,8 @@ func ReduceFollowNum(id int64) (err error) {
 	err = global.DB.Save(&user).Error
 	return
 }
+
+func GetIDByToken(token string) (id int64, err error) {
+	err = global.DB.Model(model.LogUser{}).Where("token = ?", token).Pluck("id", &id).Error
+	return
+}

@@ -55,7 +55,7 @@ func initDB() {
 		sqlDB.SetMaxOpenConns(10000)
 		sqlDB.SetConnMaxLifetime(time.Minute)
 		global.DB = localDb
-		err = global.DB.AutoMigrate(&model.LogUser{}, &model.Follow{})
+		err = global.DB.AutoMigrate(&model.LogUser{}, &model.Follow{}, &model.Video{})
 		if err != nil {
 			return
 		}
