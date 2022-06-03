@@ -8,4 +8,5 @@ type Video struct {
 	FavouriteNum	int64
 	CommentNum		int64
 	Title			string
+	CreatedAt		int64
 }

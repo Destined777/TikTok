@@ -3,6 +3,7 @@ package util
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
+	"time"
 )
 
 // ErrorHandler 处理表单错误
@@ -30,5 +31,11 @@ func GenerateTokenByJwt(username, password string) (tokenString string, err erro
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err = token.SignedString([]byte("userToken"))
+	return
+}
+
+// GetTimeStamp 获取当前时间的int64形式
+func GetTimeStamp() (t int64) {
+	t = time.Now().Unix()
 	return
 }

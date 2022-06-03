@@ -67,12 +67,35 @@ func Publish(c *gin.Context) {
 	})
 }
 
-// PublishList all users have same publish video list
+// PublishList 用户作品列表
 func PublishList(c *gin.Context) {
-	c.JSON(http.StatusOK, VideoListResponse{
+	params := http_param.GetUser{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
+
+	videos, err := service.GetVideosOfUser(params.ID, params.Token)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, UserLoginResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: err.Error()},
+		})
+		return
+	} else {
+		c.JSON(http.StatusOK, VideoListResponse{
+			Response: http_param.Response{
+				StatusCode: 0,
+			},
+			VideoList: videos,
+		})
+	}
+	/*c.JSON(http.StatusOK, VideoListResponse{
 		Response: http_param.Response{
 			StatusCode: 0,
 		},
 		VideoList: DemoVideos,
-	})
+	})*/
 }
