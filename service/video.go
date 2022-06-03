@@ -114,8 +114,9 @@ func GetVideosOfUser(id int64, token string) (res []http_param.Video, err error)
 		video.PlayUrl = videos[i].PlayUrl
 		video.CommentCount = videos[i].CommentNum
 		video.FavoriteCount = videos[i].FavouriteNum
-		video.IsFavorite = false
+		video.IsFavorite, err = dao.IsFavorite(id, videos[i].Id)
 		video.Title = videos[i].Title
 		res = append(res, video)
 	}
+	return
 }
