@@ -31,6 +31,6 @@ func DeleteComment(id int64) (err error) {
 }
 
 func GetComments(vid int64) (res []model.Comment, err error) {
-	err = global.DB.Where("video_id = ?", vid).Find(&res).Error
+	err = global.DB.Where("video_id = ? and is_deleted = ?", vid, false).Find(&res).Error
 	return
 }

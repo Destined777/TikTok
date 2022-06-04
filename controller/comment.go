@@ -41,7 +41,7 @@ func CommentAction(c *gin.Context) {
 	}
 }
 
-// CommentList all videos have same demo comment list
+// CommentList get all the comments that are not deleted
 func CommentList(c *gin.Context) {
 	params := http_param.CommentList{}
 	if err := c.ShouldBind(&params); err != nil {

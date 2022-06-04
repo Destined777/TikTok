@@ -45,7 +45,7 @@ func UnFavorite(id, Vid int64) (err error) {
 }
 
 func GetFavoriteIds(id int64) (ids []int64, err error) {
-	err = global.DB.Model(&model.Favorite{}).Where("user_id = ?", id).Find(&ids).Error
+	err = global.DB.Model(&model.Favorite{}).Where("user_id = ? and is_favorite = ?", id, true).Find(&ids).Error
 	return
 }
 
