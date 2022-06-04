@@ -2,6 +2,7 @@ package controller
 
 import (
 	"TikTok/http_param"
+	"TikTok/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,31 +19,46 @@ type CommentActionResponse struct {
 
 // CommentAction no practical effect, just check if token is valid
 func CommentAction(c *gin.Context) {
-	token := c.Query("token")
-	actionType := c.Query("action_type")
+	params := http_param.CommentParams{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, CommentActionResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
 
-	if user, exist := usersLoginInfo[token]; exist {
-		if actionType == "1" {
-			text := c.Query("comment_text")
-			c.JSON(http.StatusOK, CommentActionResponse{Response: http_param.Response{StatusCode: 0},
-				Comment: http_param.Comment{
-					Id:         1,
-					User:       user,
-					Content:    text,
-					CreateDate: "05-01",
-				}})
-			return
-		}
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 0})
+	comment, err := service.Comment(params)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, CommentActionResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: err.Error()},
+		})
 	} else {
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+		c.JSON(http.StatusOK, CommentActionResponse{
+			Response: 	http_param.Response{StatusCode: 0},
+			Comment: 	comment,
+		})
 	}
 }
 
 // CommentList all videos have same demo comment list
 func CommentList(c *gin.Context) {
+	params := http_param.CommentList{}
+	if err := c.ShouldBind(&params); err != nil {
+		c.JSON(http.StatusBadRequest, CommentActionResponse{
+			Response: http_param.Response{StatusCode: 1, StatusMsg: params.GetError(err)},
+		})
+		return
+	}
+
+	res, err := service.CommentList(params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, CommentListResponse{
+			Response:    http_param.Response{StatusCode: 1, StatusMsg: err.Error()},
+		})
+	}
 	c.JSON(http.StatusOK, CommentListResponse{
 		Response:    http_param.Response{StatusCode: 0},
-		CommentList: DemoComments,
+		CommentList: res,
 	})
 }
