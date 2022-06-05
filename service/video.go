@@ -60,7 +60,7 @@ func GetVideos(time1 int64, token string) (res []http_param.Video, next int64, e
 		if len(res) > 0 {
 			next = videos[len(res)-1].CreatedAt
 		}
-		return
+		return res, next, err
 	}
 	//用户处于未登录状态
 	videos, err := dao.GetVideos(time1)
@@ -88,7 +88,7 @@ func GetVideos(time1 int64, token string) (res []http_param.Video, next int64, e
 	if len(res) > 0 {
 		next = videos[len(res)-1].CreatedAt
 	}
-	return
+	return res, next, err
 }
 
 func GetVideosOfUser(id int64, token string) (res []http_param.Video, err error) {
