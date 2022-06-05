@@ -25,7 +25,7 @@ func RelationAction(c *gin.Context) {
 	err := service.Follow(params)
 
 	if err != nil {
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 1, StatusMsg: err.Error()})
+		c.JSON(http.StatusBadRequest, http_param.Response{StatusCode: 1, StatusMsg: err.Error()})
 	} else {
 		c.JSON(http.StatusOK, http_param.Response{StatusCode: 0})
 	}

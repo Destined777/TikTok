@@ -22,13 +22,13 @@ func Publish(c *gin.Context) {
 
 	ID, err := dao.GetIDByToken(token)
 	if err != nil {
-		c.JSON(http.StatusOK, http_param.Response{StatusCode: 1, StatusMsg: err.Error()})
+		c.JSON(http.StatusBadRequest, http_param.Response{StatusCode: 1, StatusMsg: err.Error()})
 		return
 	}
 
 	data, err := c.FormFile("data")
 	if err != nil {
-		c.JSON(http.StatusOK, http_param.Response{
+		c.JSON(http.StatusBadRequest, http_param.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -38,7 +38,7 @@ func Publish(c *gin.Context) {
 	filename := filepath.Base(data.Filename)
 	user, err := dao.GetUserByID(ID)
 	if err != nil {
-		c.JSON(http.StatusOK, http_param.Response{
+		c.JSON(http.StatusBadRequest, http_param.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -47,7 +47,7 @@ func Publish(c *gin.Context) {
 	finalName := fmt.Sprintf("%d_%s", user.ID, filename)
 	saveFile := filepath.Join("./public/", finalName)
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
-		c.JSON(http.StatusOK, http_param.Response{
+		c.JSON(http.StatusBadRequest, http_param.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -56,7 +56,7 @@ func Publish(c *gin.Context) {
 
 	err = service.CreateVideo(title, ID, finalName)
 	if err != nil {
-		c.JSON(http.StatusOK, http_param.Response{
+		c.JSON(http.StatusBadRequest, http_param.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
