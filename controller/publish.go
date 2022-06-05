@@ -30,7 +30,7 @@ func Publish(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, http_param.Response{
 			StatusCode: 1,
-			StatusMsg:  err.Error(),
+			StatusMsg:  "FormFile ERROR" + err.Error(),
 		})
 		return
 	}
