@@ -9,7 +9,7 @@ import (
 
 func Follow(userID, toID int64) (err error) {
 	follow := model.Follow{}
-	err = global.DB.Where("user_id = ? and to_id = ?", userID, toID).Find(&follow).Error
+	err = global.DB.Where("user_id = ? and to_id = ?", userID, toID).First(&follow).Error
 	if err == gorm.ErrRecordNotFound {
 		follow.UserID = userID
 		follow.ToID = toID
@@ -31,7 +31,7 @@ func Follow(userID, toID int64) (err error) {
 
 func Unfollow(userID, toID int64) (err error) {
 	follow := model.Follow{}
-	err = global.DB.Where("user_id = ? and to_id = ?", userID, toID).Find(&follow).Error
+	err = global.DB.Where("user_id = ? and to_id = ?", userID, toID).First(&follow).Error
 	if err == gorm.ErrRecordNotFound || follow.IsFollow == false {
 		err = errors.New("he has not been followed")
 		return
@@ -56,7 +56,7 @@ func FindFollowers(id int64) (IDs []int64, err error) {
 
 func IsFollow(UserID, ToID int64) (isFollow bool, err error) {
 	var follow model.Follow
-	err = global.DB.Where("user_id = ? and to_id = ?", UserID, ToID).Find(&follow).Error
+	err = global.DB.Where("user_id = ? and to_id = ?", UserID, ToID).First(&follow).Error
 	if err == gorm.ErrRecordNotFound || follow.IsFollow == false {
 		isFollow = false
 		err = nil

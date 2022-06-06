@@ -4,6 +4,8 @@ import (
 	"TikTok/dao"
 	"TikTok/http_param"
 	"errors"
+	"fmt"
+	"strconv"
 )
 
 func Favorite(params http_param.FavoriteParams) (err error) {
@@ -12,6 +14,7 @@ func Favorite(params http_param.FavoriteParams) (err error) {
 		return
 	}
 
+	fmt.Println("id" + strconv.FormatInt(id, 10))
 	if params.ActionType == 1 {
 		err = dao.Favorite(id, params.VideoID)
 	} else if params.ActionType == 2 {

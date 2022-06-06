@@ -6,6 +6,8 @@ import (
 	"TikTok/model"
 	"TikTok/util"
 	"errors"
+	"fmt"
+	"strconv"
 )
 
 func CreateVideo(title string, ID int64, name string) (err error) {
@@ -32,6 +34,7 @@ func GetVideos(time1 int64, token string) (res []http_param.Video, next int64, e
 		if err != nil {
 			return nil, 0, err
 		}
+		fmt.Println("id" + strconv.FormatInt(id, 10))
 		videos, err := dao.GetVideos(time1)
 		for i := 0; i < len(videos); i++ {
 			var video http_param.Video

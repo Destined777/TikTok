@@ -3,13 +3,14 @@ package dao
 import (
 	"TikTok/global"
 	"TikTok/model"
+	"fmt"
 	"gorm.io/gorm"
 )
 
 // ExistUser 确认用户是否存在，对未查询到与查询到用户均不报错而只是分类
 func ExistUser(username string) (isExist bool, err error) {
 	user := model.LogUser{}
-	err = global.DB.Where("Username = ?", username).Find(&user).Error
+	err = global.DB.Where("Username = ?", username).First(&user).Error
 	if err == gorm.ErrRecordNotFound {
 		return false, nil
 	} else if err == nil {
@@ -24,11 +25,7 @@ func CreateUser(user model.LogUser) (ID int64, err error) {
 	if err != nil {
 		return
 	}
-	logUser, err := GetUserByName(user.Username)
-	if err != nil {
-		return
-	}
-	ID = logUser.ID
+	ID = user.ID
 	return
 }
 
@@ -97,6 +94,12 @@ func ReduceFollowNum(id int64) (err error) {
 }
 
 func GetIDByToken(token string) (id int64, err error) {
-	err = global.DB.Model(model.LogUser{}).Where("token = ?", token).Pluck("id", &id).Error
+	var user model.LogUser
+	fmt.Println(token)
+	err = global.DB.Where("token = ?", token).Find(&user).Error
+	id = user.ID
+	fmt.Println(id)
+
+	//err = global.DB.Model(&model.LogUser{}).Where("token = ?", token).Pluck("id", &id).Error
 	return
 }

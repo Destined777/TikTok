@@ -17,6 +17,7 @@ func Register(params http_param.UserLogIn) (ID int64, token string, err error) {
 	}
 	if isExist {
 		err = errors.New("user has already existed")
+		return
 	}
 
 	user := model.LogUser{
