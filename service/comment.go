@@ -5,6 +5,7 @@ import (
 	"TikTok/http_param"
 	"TikTok/model"
 	"errors"
+	"strconv"
 	"time"
 )
 
@@ -52,11 +53,12 @@ func Comment(params http_param.CommentParams) (res http_param.Comment, err error
 		if month < 10 {
 			date += "0"
 		}
-		date += string(rune(month))
+		date += strconv.FormatInt(int64(month), 10)
+		date += "-"
 		if day < 10 {
 			date += "0"
 		}
-		date += string(rune(day))
+		date += strconv.FormatInt(int64(day), 10)
 
 		comment := model.Comment{
 			UserId:    id,
@@ -98,11 +100,7 @@ func CommentList(params http_param.CommentList) (res []http_param.Comment, err e
 		return
 	}
 
-	video, err := dao.GetVideoByID(params.VideoId)
-	if err != nil {
-		return
-	}
-	user, err := dao.GetUserByID(video.UserId)
+	user, err := dao.GetUserByID(id)
 	if err != nil {
 		return
 	}
