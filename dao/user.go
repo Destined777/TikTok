@@ -3,7 +3,6 @@ package dao
 import (
 	"TikTok/global"
 	"TikTok/model"
-	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -95,10 +94,8 @@ func ReduceFollowNum(id int64) (err error) {
 
 func GetIDByToken(token string) (id int64, err error) {
 	var user model.LogUser
-	fmt.Println(token)
 	err = global.DB.Where("token = ?", token).Find(&user).Error
 	id = user.ID
-	fmt.Println(id)
 
 	//err = global.DB.Model(&model.LogUser{}).Where("token = ?", token).Pluck("id", &id).Error
 	return

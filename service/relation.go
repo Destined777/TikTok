@@ -8,7 +8,11 @@ import (
 )
 
 func Follow(params http_param.Follow) (err error) {
-	isExist, err := dao.ExistUserByID(params.UserID)
+	userId, err := dao.GetIDByToken(params.Token)
+	if err != nil {
+		return
+	}
+	isExist, err := dao.ExistUserByID(userId)
 	if err != nil {
 		return
 	}
@@ -26,20 +30,20 @@ func Follow(params http_param.Follow) (err error) {
 		return
 	}
 
-	_, isMatch := dao.IsIDAndTokenMatch(params.UserID, params.Token)
+	_, isMatch := dao.IsIDAndTokenMatch(userId, params.Token)
 	if !isMatch {
 		err = errors.New("ID and Token are not matched")
 	}
 
 	if params.ActionType == 1 {
-		err = dao.Follow(params.UserID, params.ToID)
+		err = dao.Follow(userId, params.ToID)
 		if err != nil {
-			err = dao.AddFollowNum(params.UserID)
+			err = dao.AddFollowNum(userId)
 		}
 	} else if params.ActionType == 2 {
-		err = dao.Unfollow(params.UserID, params.ToID)
+		err = dao.Unfollow(userId, params.ToID)
 		if err != nil {
-			err = dao.ReduceFollowNum(params.UserID)
+			err = dao.ReduceFollowNum(userId)
 		}
 	} else {
 		err = errors.New("action_type is not correct")
