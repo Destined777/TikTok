@@ -79,6 +79,17 @@ func AddFollowNum(id int64) (err error) {
 	return
 }
 
+func AddFollowerNum(id int64) (err error) {
+	var user model.LogUser
+	err = global.DB.Where("ID = ?", id).Find(&user).Error
+	if err != nil {
+		return
+	}
+	user.FollowerNum++
+	err = global.DB.Save(&user).Error
+	return
+}
+
 func ReduceFollowNum(id int64) (err error) {
 	var user model.LogUser
 	err = global.DB.Where("ID = ?", id).Find(&user).Error
@@ -87,6 +98,19 @@ func ReduceFollowNum(id int64) (err error) {
 	}
 	if user.FollowerNum > 0 {
 		user.FollowNum--
+	}
+	err = global.DB.Save(&user).Error
+	return
+}
+
+func ReduceFollowerNum(id int64) (err error) {
+	var user model.LogUser
+	err = global.DB.Where("ID = ?", id).Find(&user).Error
+	if err != nil {
+		return
+	}
+	if user.FollowerNum > 0 {
+		user.FollowerNum--
 	}
 	err = global.DB.Save(&user).Error
 	return

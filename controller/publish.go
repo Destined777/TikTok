@@ -17,8 +17,12 @@ type VideoListResponse struct {
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
+
+
 	token := c.PostForm("token")
 	title := c.PostForm("title")
+	fmt.Println(token)
+	fmt.Println(title)
 
 	ID, err := dao.GetIDByToken(token)
 	if err != nil {
@@ -54,6 +58,7 @@ func Publish(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(finalName)
 	err = service.CreateVideo(title, ID, finalName)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, http_param.Response{

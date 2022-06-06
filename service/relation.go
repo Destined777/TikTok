@@ -40,10 +40,16 @@ func Follow(params http_param.Follow) (err error) {
 		if err != nil {
 			err = dao.AddFollowNum(userId)
 		}
+		if err != nil {
+			err = dao.AddFollowerNum(params.ToID)
+		}
 	} else if params.ActionType == 2 {
 		err = dao.Unfollow(userId, params.ToID)
 		if err != nil {
 			err = dao.ReduceFollowNum(userId)
+		}
+		if err != nil {
+			err = dao.ReduceFollowerNum(params.ToID)
 		}
 	} else {
 		err = errors.New("action_type is not correct")
