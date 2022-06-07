@@ -11,12 +11,12 @@ func CreateVideo(video model.Video) (err error) {
 }
 
 func GetVideos(time1 int64) (videos []model.Video, err error) {
-	err = global.DB.Where("created_at < ?", time1).Limit(30).Find(&videos).Order("created_at DESC").Error
+	err = global.DB.Where("created_at < ?", time1).Order("created_at desc").Limit(30).Find(&videos).Error
 	return
 }
 
 func GetVideosOfUser(id int64) (videos []model.Video, err error) {
-	err = global.DB.Where("user_id = ?", id).Find(&videos).Order("created_at DESC").Error
+	err = global.DB.Where("user_id = ?", id).Order("created_at desc").Find(&videos).Error
 	return
 }
 

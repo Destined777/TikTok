@@ -120,7 +120,6 @@ func GetIDByToken(token string) (id int64, err error) {
 	var user model.LogUser
 	err = global.DB.Where("token = ?", token).Find(&user).Error
 	id = user.ID
-
 	//err = global.DB.Model(&model.LogUser{}).Where("token = ?", token).Pluck("id", &id).Error
 	return
 }

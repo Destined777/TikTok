@@ -1,6 +1,7 @@
 package service
 
 import (
+	"TikTok/consts"
 	"TikTok/dao"
 	"TikTok/http_param"
 	"TikTok/model"
@@ -11,7 +12,7 @@ import (
 func CreateVideo(title string, ID int64, name string) (err error) {
 	video := model.Video{
 		UserId:       	ID,
-		PlayUrl:      	"http://10.21.191.27:8080/static/"+name,
+		PlayUrl:      	consts.IPV4 + "static/"+name,
 		CoverUrl:     	"https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg",
 		FavouriteNum: 	0,
 		CommentNum:   	0,
