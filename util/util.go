@@ -1,8 +1,14 @@
 package util
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
+	ffmpeg "github.com/u2takey/ffmpeg-go"
+	"io"
+	"math/rand"
+	"os"
 	"time"
 )
 
@@ -38,4 +44,25 @@ func GenerateTokenByJwt(username, password string) (tokenString string, err erro
 func GetTimeStamp() (t int64) {
 	t = time.Now().Unix()
 	return
+}
+
+// ReadFrameAsJpeg 从视频中抽帧
+func ReadFrameAsJpeg(inFileName string, frameNum int) io.Reader {
+	buf := bytes.NewBuffer(nil)
+	err := ffmpeg.Input(inFileName).
+		Filter("select", ffmpeg.Args{fmt.Sprintf("gte(n,%d)", frameNum)}).
+		Output("pipe:", ffmpeg.KwArgs{"vframes": 1, "format": "image2", "vcodec": "mjpeg"}).
+		WithOutput(buf, os.Stdout).
+		Run()
+	if err != nil {
+		panic(err)
+	}
+	return buf
+}
+
+// GenerateVerificationCode 生成6位数随机数
+func GenerateVerificationCode() (code string) {
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
+	return vcode
 }

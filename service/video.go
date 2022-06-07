@@ -7,13 +7,24 @@ import (
 	"TikTok/model"
 	"TikTok/util"
 	"errors"
+	"github.com/disintegration/imaging"
 )
 
 func CreateVideo(title string, ID int64, name string) (err error) {
+	reader := util.ReadFrameAsJpeg(consts.IPV4 +"static/"+name, 0)
+	img, err := imaging.Decode(reader)
+	if err != nil {
+		return
+	}
+	coverName := util.GenerateVerificationCode() + ".jpeg"
+	err = imaging.Save(img, "./public/" + coverName)
+	if err != nil {
+		return
+	}
 	video := model.Video{
 		UserId:       	ID,
-		PlayUrl:      	consts.IPV4 + "static/"+name,
-		CoverUrl:     	"https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg",
+		PlayUrl:      	consts.IPV4 + "static/" + name,
+		CoverUrl:     	consts.IPV4 + "static/" + coverName,
 		FavouriteNum: 	0,
 		CommentNum:   	0,
 		Title:        	title,
