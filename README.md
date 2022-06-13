@@ -34,11 +34,11 @@
 
   
 
-  ![](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105520766.png)
+  ![](https://github.com/Destined777/TikTok/blob/main/public/image-20220613105520766.png)
 
   注册测试
 
-  ![](C:\Users\86188\Pictures\image-20220613105726392.png)
+  ![](https://github.com/Destined777/TikTok/blob/main/public/image-20220613105726392.png)
 
   
 
