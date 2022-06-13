@@ -44,14 +44,14 @@
 
   移动端登录成功
 
-  ![](C:\Users\86188\Pictures\image-20220613115917111.png)
+  ![](https://github.com/Destined777/TikTok/blob/main/public/image-20220613115917111.png)
 
   发布视频成功
   
-  ![](C:\Users\86188\Pictures\image-20220613115946828.png)
+  ![](https://github.com/Destined777/TikTok/blob/main/public/image-20220613115946828.png)
 
 ​				可以在public文件夹下看到刚生成的封面和图片
 
-<video src="C:\Users\86188\Documents\WeChat Files\wxid_t6q35jqt6gd422\FileStorage\MsgAttach\a12b0cee5f8b3aa5c44f46f3b86d449a\Video\2022-06\84d7b315ee8709321dac4f128976db71.mp4"></video>
+<video src="https://github.com/Destined777/TikTok/blob/main/public/84d7b315ee8709321dac4f128976db71.mp4"></video>
 
 其它功能演示视频
