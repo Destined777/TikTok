@@ -32,21 +32,21 @@
 
   [链接]: https://www.apifox.cn/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-1834514
 
-  ![image-20220613105520766](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105520766.png)
+  ![](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105520766.png)
 
   注册测试
 
-  ![image-20220613105726392](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105726392.png)
+  ![](C:\Users\86188\Pictures\image-20220613105726392.png)
 
   
 
   移动端登录成功
 
-  ![image-20220613115917111](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613115917111.png)
+  ![](C:\Users\86188\Pictures\image-20220613115917111.png)
 
   发布视频成功
 
-  ![image-20220613115946828](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613115946828.png)
+  ![](C:\Users\86188\Pictures\image-20220613115946828.png)
 
 ​				可以在public文件夹下看到刚生成的封面和图片
 
