@@ -13,15 +13,43 @@
 - util层存其它各层由于业务需求调用的工具类函数。
 - global与config的作用是处理配置文件，初始化环境配置，方便其它层对数据库的操作。
 - http_param文件下存接收表单输入的结构体
-## 功能
+## 功能（已实现要求的全部功能）
 - 用户注册
 - 登录 
 - jwt身份验证（只是通过jwt生成token并没有通过请求头来验证）
 - 视频发布与获取
+- 根据视频内容抽帧自动生成封面（ffmpeg）
 - 评论
 - 点赞
 - 关注
 ## 说明
 - go mod tidy 引入依赖
 - go run main.go 运行程序
+
 ## 演示
+
+- 接口文档 
+
+  [链接]: https://www.apifox.cn/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-1834514
+
+  ![image-20220613105520766](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105520766.png)
+
+  注册测试
+
+  ![image-20220613105726392](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105726392.png)
+
+  
+
+  移动端登录成功
+
+  ![image-20220613115917111](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613115917111.png)
+
+  发布视频成功
+
+  ![image-20220613115946828](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613115946828.png)
+
+​				可以在public文件夹下看到刚生成的封面和图片
+
+<video src="C:\Users\86188\Documents\WeChat Files\wxid_t6q35jqt6gd422\FileStorage\MsgAttach\a12b0cee5f8b3aa5c44f46f3b86d449a\Video\2022-06\84d7b315ee8709321dac4f128976db71.mp4"></video>
+
+其它功能演示视频
