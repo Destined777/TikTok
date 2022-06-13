@@ -30,7 +30,9 @@
 
 - 接口文档 
 
-  [链接]: https://www.apifox.cn/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-1834514
+  [链接](https://www.apifox.cn/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-1834514)
+
+  
 
   ![](C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20220613105520766.png)
 
@@ -45,7 +47,7 @@
   ![](C:\Users\86188\Pictures\image-20220613115917111.png)
 
   发布视频成功
-
+  
   ![](C:\Users\86188\Pictures\image-20220613115946828.png)
 
 ​				可以在public文件夹下看到刚生成的封面和图片
