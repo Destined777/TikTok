@@ -52,6 +52,5 @@
 
 ​				可以在public文件夹下看到刚生成的封面和图片
 
-[<video src="https://github.com/Destined777/TikTok/blob/main/public/84d7b315ee8709321dac4f128976db71.mp4"></video>
-](https://github.com/Destined777/TikTok/blob/main/public/84d7b315ee8709321dac4f128976db71.mp4)
+<video src="[视频链接](https://github.com/Destined777/TikTok/blob/main/public/84d7b315ee8709321dac4f128976db71.mp4)" controls="controls" width="500" height="300">demo视频</video>
 其它功能演示视频
